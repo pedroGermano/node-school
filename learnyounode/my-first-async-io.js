@@ -1,11 +1,21 @@
-const fs = require("fs");
-const file = process.argv[2];
+const fs = require('fs')
+const path = require('path')
 
-fs.readFile(file, function (err, contents){
-  if(err) {
-    return console.log(err)
-  }
+/**
+ * Calls the callback with an array of files filtered by extension
+ * @param folder
+ * @param extension
+ * @param callback
+ */
+module.exports = function(folder, extension, callback) {
+  return fs.readdir(folder, (err, list) => {
+    if (err)
+      return callback(err) // early return
 
-  const lines = contents.toString().split('\n').length - 1
-  console.log(lines)
-})
+    // ... no error, continue doing cool things with `data`
+
+    // all went well, call callback with `null` for the error argument
+
+    callback(null, list.filter(file => path.extname(file) === `.${extension}`))
+  })
+}
